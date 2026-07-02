@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-panel mx-auto">
+    <span class="eyebrow">CRUD de tareas</span>
+    <h1 class="h3 mb-3">Crear tarea</h1>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form method="POST" action="{% url 'create_task' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            <label class="form-label" for="{{ form.title.id_for_label }}">Título</label>
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="{{ form.description.id_for_label }}">Descripción</label>
+            {{ form.description }}
+            {{ form.description.errors }}
+        </div>
+        <div class="form-check mb-4">
+            {{ form.important }}
+            <label class="form-check-label" for="{{ form.important.id_for_label }}">Marcar como importante</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a class="btn btn-outline-secondary" href="{% url 'tasks' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1>Cargos</h1>
+        <p class="text-muted">CRUD de cargos usando {{ view_type }}.</p>
+    </div>
+    <div>
+        <a class="btn btn-primary" href="{% url 'cargo_create' %}">Nuevo Cargo</a>
+    </div>
+</div>
+{% if cargos %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th class="text-end">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cargo in cargos %}
+                <tr>
+                    <td>{{ cargo.nombre }}</td>
+                    <td>{{ cargo.descripcion }}</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'cargo_update' cargo.id %}">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'cargo_delete' cargo.id %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-info">No hay cargos registrados.</div>
+{% endif %}
+{% endblock %}

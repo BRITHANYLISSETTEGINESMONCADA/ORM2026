@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-card mx-auto">
+    <span class="eyebrow">Bienvenido de nuevo</span>
+    <h1 class="h3 mb-3">Iniciar sesión</h1>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form method="POST" action="{% url 'signin' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}
+                    <div class="form-text text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+    </form>
+    <p class="text-center text-secondary mt-3 mb-0">
+        ¿No tienes cuenta? <a href="{% url 'signup' %}">Regístrate</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <span class="eyebrow">Hola, {{ user.username }}</span>
+        <h1 class="mb-0">{% if completed_view %}Tareas completadas{% else %}Tareas pendientes{% endif %}</h1>
+    </div>
+    <a class="btn btn-primary" href="{% url 'create_task' %}">Crear tarea</a>
+</div>
+
+<section class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="metric-card compact">
+            <span>Pendientes</span>
+            <strong>{{ pending_count }}</strong>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="metric-card compact">
+            <span>Importantes</span>
+            <strong>{{ important_count }}</strong>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="metric-card compact">
+            <span>Completadas</span>
+            <strong>{{ completed_count }}</strong>
+        </div>
+    </div>
+</section>
+
+<div class="segmented-nav mb-3">
+    <a class="{% if not completed_view %}active{% endif %}" href="{% url 'tasks' %}">Pendientes</a>
+    <a class="{% if completed_view %}active{% endif %}" href="{% url 'tasks_completed' %}">Completadas</a>
+</div>
+
+<div class="task-list">
+    {% for task in tasks %}
+        <article class="task-item">
+            <div class="task-main">
+                <div class="task-title-row">
+                    <h2 class="{% if task.important %}important{% endif %}">
+                        <a href="{% url 'task_detail' task.id %}">{{ task.title }}</a>
+                    </h2>
+                    {% if task.important %}
+                        <span class="status-badge">Importante</span>
+                    {% endif %}
+                </div>
+                {% if task.description %}
+                    <p>{{ task.description }}</p>
+                {% endif %}
+                {% if task.datecompleted %}
+                    <small>Completada: {{ task.datecompleted|date:"M d Y" }}</small>
+                {% else %}
+                    <small>Creada: {{ task.created|date:"M d Y" }}</small>
+                {% endif %}
+            </div>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'task_detail' task.id %}">Abrir</a>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h2 class="h5">{% if completed_view %}Aún no hay tareas completadas{% else %}No tienes tareas pendientes{% endif %}</h2>
+            <p class="text-secondary mb-3">Crea una tarea para probar el CRUD completo del proyecto.</p>
+            <a class="btn btn-primary" href="{% url 'create_task' %}">Crear tarea</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
